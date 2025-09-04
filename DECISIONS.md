@@ -17,7 +17,7 @@
 
 ## Idempotency
 - `UNIQUE(PageId, DraftId)` guarantees publish is at most once; repeated calls are no-ops.  
-- Publication Id can be random `Guid.NewGuid()`; idempotency relies on the unique key.  
+- Publication Id can be random Guid; idempotency relies on the unique key.  
 
 ## Validation & Semantics
 - **404** if page missing.  
