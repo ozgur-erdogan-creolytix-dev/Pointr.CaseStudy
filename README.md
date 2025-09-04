@@ -30,6 +30,24 @@
 - After archive/publish: always invalidate; warm only if a new publication was created.  
 
 
+# Pointr Case Study – Run Guide
+
+## Prerequisites
+- Docker Desktop
+
+## Option A — Docker Compose
+```bash
+# from the repository root
+docker compose up --build
+```
+
+## Option B — Visual Studio
+
+### Run with docker-compose (easiest in VS)
+1. Right-click the **docker-compose** project → **Set as Startup Project**  
+2. Select the **docker-compose** profile from the dropdown  
+3. Run the project  
+
 
 ## Test Data
 
