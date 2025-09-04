@@ -86,3 +86,57 @@ INSERT INTO "PagePublications" ("Id","PageId","DraftId","PublishedUtc") VALUES
  '7f4a1004-0000-0000-0000-000000000003',
  NOW() - INTERVAL '2 days')
 ON CONFLICT DO NOTHING;
+
+```
+
+## Postman Test Samples
+
+All requests are `DELETE`:
+
+- **Idempotency**
+- http://localhost:8080/api/v1/sites/6f4a0001-0000-0000-0000-000000000001/pages/about?publishDraft=2
+
+- **400 (wrong draft)**  
+- http://localhost:8080/api/v1/sites/6f4a0001-0000-0000-0000-000000000001/pages/contact?publishDraft=2
+
+
+- **404 (missing page)**  
+- http://localhost:8080/api/v1/sites/6f4a0001-0000-0000-0000-000000000001/pages/missing?publishDraft=2
+
+- **No PublishDraft**
+- http://localhost:8080/api/v1/sites/6f4a0001-0000-0000-0000-000000000001/pages/legal
+
+- **Concurrency**  
+http://localhost:8080/api/v1/sites/6f4a0001-0000-0000-0000-000000000001/pages/about?publishDraft=2
+### Pre-request Script For Postman(for Concurrency Testing)
+
+```javascript
+// === Concurrency spike: send N parallel DELETEs ===
+const N = 2;
+const url = "http://localhost:8080/api/v1/sites/6f4a0001-0000-0000-0000-000000000001/pages/about?publishDraft=2";
+
+let done = 0;
+const codes = [];
+
+function finalize() {
+if (done !== N) return;
+codes.sort();
+pm.test("Concurrency responses are either [204,204] or [204,409]", function () {
+  const ok =
+    (codes.length === 2 && ((codes[0] === 204 && codes[1] === 204) || (codes[0] === 204 && codes[1] === 409))) ||
+    (codes.length > 2 && codes.includes(204) && (codes.includes(409) || codes.every(c => c === 204)));
+  pm.expect(ok).to.be.true;
+});
+}
+
+// Fire N parallel DELETEs
+for (let i = 0; i < N; i++) {
+pm.sendRequest({ url, method: "DELETE", header: { Accept: "application/json" } }, (err, res) => {
+  if (err) console.log("err", err);
+  else codes.push(res.code);
+  done++;
+  finalize();
+});
+}
+```
+
