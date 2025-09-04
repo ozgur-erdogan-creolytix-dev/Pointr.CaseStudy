@@ -48,6 +48,17 @@ docker compose up --build
 2. Select the **docker-compose** profile from the dropdown  
 3. Run the project  
 
+### Host 8080 → API
+- **URL:** http://localhost:8080  
+- **Swagger:** http://localhost:8080/swagger/index.html  
+- **Container internal port:** 8080  
+
+### Host 5432 → PostgreSQL
+- **Connection:** localhost:5432  
+- **Database:** pointr_case  
+- **User:** postgres  
+- **Password:** postgres  
+- **Container internal port:** 5432  
 
 ## Test Data
 
