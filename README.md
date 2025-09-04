@@ -1,7 +1,7 @@
 # DECISIONS
 
 ## Architecture
-- Clean Architecture (DDD-lite).  
+- Clean Architecture (Domain Driven Design).  
 - Domain holds entities; Application hosts the use-case handler; Infrastructure provides EF Core (Npgsql) and caching.  
 - Generic `IGenericRepository` + `IUnitOfWork`; query objects (`…By…Query`) instead of ad-hoc LINQ.  
 
