@@ -109,10 +109,12 @@ All requests are `DELETE`:
 - **Concurrency**  
 http://localhost:8080/api/v1/sites/6f4a0001-0000-0000-0000-000000000001/pages/about?publishDraft=2
 ### Pre-request Script For Postman(for Concurrency Testing)
+When two concurrent requests are sent, the outcome can vary depending on timing. Sometimes both return 204, because the second request finds the resource already in the desired state and the database does not register a conflict (idempotent behavior).
 
+With three concurrent requests, the overlap window is larger. At least one request will inevitably attempt to update a stale RowVersion, triggering a DbUpdateConcurrencyException. After the single retry fails, it is converted into a 409 Conflict, which is the expected result.
 ```javascript
 // === Concurrency spike: send N parallel DELETEs ===
-const N = 2;
+const N = 3;
 const url = "http://localhost:8080/api/v1/sites/6f4a0001-0000-0000-0000-000000000001/pages/about?publishDraft=2";
 
 let done = 0;
