@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A6F3E6B6-5A6B-4E84-8C7E-3D7E6E4D9ABC}</ProjectGuid>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <!-- F5'te debugger'ın attach olacağı servis adı -->
+    <DockerServiceName>api</DockerServiceName>
+    <!-- Tarayıcıyı aç (Swagger) -->
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerLaunchBrowserUrl>http://localhost:8080/swagger</DockerLaunchBrowserUrl>
+    <ProjectVersion>2.1</ProjectVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="docker-compose.yml" />
+    <None Include="docker-compose.override.yml" Condition="Exists('docker-compose.override.yml')" />
+  </ItemGroup>
+</Project>
