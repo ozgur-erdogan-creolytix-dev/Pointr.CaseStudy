@@ -23,7 +23,6 @@
 - **404** if page missing.  
 - **400** if `publishDraft` doesn’t belong to that page.  
 - On success always **204**.  
-- All timestamps UTC; `CancellationToken` propagated.  
 
 ## Cache (bonus)
 - `IMemoryCache` for `GetPublishedPage(siteId, slug)` — **60s hit**, **10s negative**.  
